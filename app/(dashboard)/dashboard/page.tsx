@@ -190,6 +190,7 @@ export default function Dashboard() {
         if (p) {potwPlayerName = `${p.first_name} ${p.last_name}`
       }
     }
+  }
     // PGRST116 = no rows — not treated as error
 
     setStats({ totalPlayers, activePlayers, inactivePlayers, graduatedPlayers, upcomingEvents, totalEvents, recentNews, totalNews, potwActive, potwPlayerName, lastFetched: new Date() })
