@@ -5,11 +5,11 @@ export const siteConfig = {
   description: 'Developing champions on and off the court.',
   logo: '/bnbLogo.jpeg',
   contact: {
-    phone: '15551234567',
+    phone: '+234 803 518 2788',
     message: "Hi! I'd like to learn more about Books & Ball Basketball Academy.",
-    address: '123 Basketball Court, Sports City, SC 12345',
+    address: 'Osun State sport complex(Stadium),along Omowest,Ikirun road, Osogbo Osun state',
     email: 'info@booksandball.com',
-    displayPhone: '(555) 123-4567',
+    displayPhone: '+234 803 518 2788',
   },
   navigation: [
     { name: 'Home', href: '/' },
@@ -27,8 +27,8 @@ export const siteConfig = {
     'College Prep',
   ],
   socials: [
-    { name: 'Facebook', href: 'https://facebook.com' },
-    { name: 'Instagram', href: 'https://instagram.com' },
-    { name: 'Twitter', href: 'https://twitter.com' },
+    { name: 'Facebook', href: '#' },
+    { name: 'Instagram', href: '#' },
+    { name: 'Twitter', href: '#' },
   ],
 }
