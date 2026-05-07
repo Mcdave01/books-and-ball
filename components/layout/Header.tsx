@@ -70,7 +70,7 @@ export function Header() {
             {/* Right-side actions */}
             <div className="flex items-center gap-2 sm:gap-3">
               {/* WhatsApp — full button on sm+, icon-only on xs */}
-              <WhatsAppButton
+              {/* <WhatsAppButton
                 phoneNumber={siteConfig.contact.phone}
                 message={siteConfig.contact.message}
                 className="hidden sm:flex"
@@ -83,7 +83,7 @@ export function Header() {
                 title="Contact via WhatsApp"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" />
-              </a>
+              </a> */}
 
               {/* Login — hidden on mobile to save space; accessible from the mobile menu */}
               <Link
