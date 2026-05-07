@@ -45,7 +45,7 @@ export function Header() {
               />
               <div>
                 {/* ── FIX 4: Slightly smaller brand text on mobile so it doesn't crowd the right-side buttons ── */}
-                <h1 className="text-base font-black leading-tight text-gray-950 sm:text-xl">{siteConfig.name}</h1>
+                <h1 className="text-base font-black leading-tight text-gray-950 sm:text-sm">{siteConfig.name}</h1>
                 <p className="text-xs font-semibold text-orange-600 sm:text-sm">Basketball Academy</p>
               </div>
             </Link>
