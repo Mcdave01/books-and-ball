@@ -34,8 +34,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Header />
         <main className="flex-1">{children}</main>
-        <Footer />
         <FloatingWhatsApp />
+        <Footer />
+        
       </body>
     </html>
   );
