@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-// Slide content drives the text, imagery, metrics, and color theme for each hero state.
 const slides = [
   {
     id: 1,
@@ -49,43 +48,47 @@ const slides = [
 const SLIDE_DURATION = 6500
 
 export function HeroSlider() {
-  // Track the active slide and derive the visible content from the slide config.
   const [currentSlide, setCurrentSlide] = useState(0)
   const activeSlide = slides[currentSlide]
 
-  // Automatically advance the hero while keeping manual navigation available.
   useEffect(() => {
     const timer = window.setInterval(() => {
       setCurrentSlide((slide) => (slide + 1) % slides.length)
     }, SLIDE_DURATION)
-
     return () => window.clearInterval(timer)
   }, [])
 
-  const goToNextSlide = () => {
-    setCurrentSlide((slide) => (slide + 1) % slides.length)
-  }
-
-  const goToPreviousSlide = () => {
-    setCurrentSlide((slide) => (slide - 1 + slides.length) % slides.length)
-  }
+  const goToNextSlide = () => setCurrentSlide((s) => (s + 1) % slides.length)
+  const goToPreviousSlide = () => setCurrentSlide((s) => (s - 1 + slides.length) % slides.length)
 
   return (
     <section className="relative isolate overflow-hidden bg-[#090d14] text-white">
-      {/* Decorative page background behind the slider stage. */}
+      {/* Background decoration */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,146,60,0.28),transparent_34%),radial-gradient(circle_at_80%_20%,rgba(14,165,233,0.22),transparent_28%),linear-gradient(135deg,#090d14_0%,#111827_45%,#05070b_100%)]" />
       <div className="absolute inset-x-8 top-8 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
       <div className="absolute -right-28 top-20 h-72 w-72 rounded-full border border-white/10" />
       <div className="absolute -bottom-36 left-16 h-80 w-80 rounded-full bg-orange-500/10 blur-3xl" />
 
-      {/* Main hero layout: large image stage plus supporting info panel. */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-        <div className="grid min-h-[calc(100vh-7rem)] gap-6 lg:grid-cols-[minmax(0,1fr)_25rem]">
-          {/* Image stage: stacks all slides and fades/translates only the active one into view. */}
-          <div className="relative min-h-[34rem] overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 shadow-2xl shadow-black/40">
+      {/* ── OUTER WRAPPER
+            FIX 1: Reduced vertical padding on mobile (py-4 → lg:py-12).
+            Previously py-8 which added too much empty space on small screens. ── */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-12">
+
+        {/* ── GRID
+              FIX 2: Removed fixed min-h-[calc(100vh-7rem)] from the grid itself.
+              That height forced the whole layout to be ~100vh on mobile, making it
+              scroll-heavy before the user sees any content. Height is now driven
+              naturally by the image stage below. ── */}
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_25rem]">
+
+          {/* ── IMAGE STAGE
+                FIX 3: min-h changes from a flat 34rem to:
+                  mobile  → min-h-[60vw]  (scales with screen width, never crushes)
+                  sm      → min-h-[28rem]
+                  lg      → min-h-[34rem]  (original value, still used on desktop) ── */}
+          <div className="relative min-h-[60vw] overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl shadow-black/40 sm:min-h-[28rem] sm:rounded-[2.5rem] lg:min-h-[34rem]">
             {slides.map((slide, index) => {
               const isActive = index === currentSlide
-
               return (
                 <div
                   key={slide.id}
@@ -115,18 +118,25 @@ export function HeroSlider() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-black/5" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#090d14] via-transparent to-transparent" />
 
-            <div className="relative flex h-full min-h-[34rem] flex-col justify-between p-6 sm:p-8 lg:p-10">
-              {/* Top bar: brand badge and previous/next controls. */}
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-black/25 px-4 py-2 backdrop-blur-md">
+            {/* ── INNER CONTENT PADDING
+                  FIX 4: Reduced padding on mobile from p-6 to p-4. p-6 on a
+                  narrow screen consumed too much horizontal space and pushed text
+                  into the image edge. sm restores p-6, lg restores p-10. ── */}
+            <div className="relative flex h-full min-h-[60vw] flex-col justify-between p-4 sm:min-h-[28rem] sm:p-6 lg:min-h-[34rem] lg:p-10">
+
+              {/* Top bar: brand badge + prev/next controls */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/25 px-3 py-1.5 backdrop-blur-md sm:gap-3 sm:px-4 sm:py-2">
                   <Image
                     src="/bnbLogo.jpeg"
                     alt="Books & Ball Basketball Academy Logo"
-                    width={42}
-                    height={42}
-                    className="rounded-full border border-white/60"
+                    width={36}
+                    height={36}
+                    className="rounded-full border border-white/60 sm:h-[42px] sm:w-[42px]"
                   />
-                  <span className="text-xs font-black uppercase tracking-[0.35em] text-white/85">
+                  {/* ── FIX 5: Hide brand text on very small screens so the badge
+                        doesn't crowd the nav buttons. Visible from sm up. ── */}
+                  <span className="hidden text-xs font-black uppercase tracking-[0.35em] text-white/85 sm:inline">
                     Books & Ball
                   </span>
                 </div>
@@ -134,50 +144,61 @@ export function HeroSlider() {
                 <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/20 p-1 backdrop-blur-md">
                   <button
                     onClick={goToPreviousSlide}
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white hover:text-slate-950"
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-white transition hover:bg-white hover:text-slate-950 sm:h-10 sm:w-10"
                     aria-label="Previous slide"
                   >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
                   <button
                     onClick={goToNextSlide}
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white hover:text-slate-950"
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-white transition hover:bg-white hover:text-slate-950 sm:h-10 sm:w-10"
                     aria-label="Next slide"
                   >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
                 </div>
               </div>
 
-              {/* Active slide copy and call-to-action buttons. */}
+              {/* Slide copy + CTA */}
               <div className="max-w-3xl">
                 <div
                   key={activeSlide.id}
                   className="transition-all duration-700 animate-in fade-in slide-in-from-bottom-4"
                 >
-                  <p className={`mb-5 inline-flex rounded-full bg-gradient-to-r ${activeSlide.gradient} px-4 py-2 text-xs font-black uppercase tracking-[0.28em] text-slate-950`}>
+                  <p className={`mb-3 inline-flex rounded-full bg-gradient-to-r ${activeSlide.gradient} px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.24em] text-slate-950 sm:mb-5 sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.28em]`}>
                     {activeSlide.kicker}
                   </p>
-                  <h1 className="max-w-4xl text-5xl font-black leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
+
+                  {/* ── FIX 6: Heading was text-5xl on mobile (48px) — way too large
+                        for a 360-390px wide phone. Now:
+                          mobile  → text-3xl  (30px — readable, fits in 1–2 lines)
+                          sm      → text-5xl  (48px)
+                          lg      → text-7xl  (72px — original desktop size) ── */}
+                  <h1 className="max-w-4xl text-3xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-7xl">
                     {activeSlide.title}
                   </h1>
-                  <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 sm:text-xl">
+
+                  {/* ── FIX 7: Body copy was text-lg on mobile. Reduced to text-sm
+                        so it doesn't push the CTA buttons below the fold on phones. ── */}
+                  <p className="mt-4 max-w-2xl text-sm leading-7 text-white/82 sm:mt-6 sm:text-lg lg:text-xl">
                     {activeSlide.copy}
                   </p>
-                  <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+
+                  {/* CTA buttons — already had flex-col on mobile, kept as-is */}
+                  <div className="mt-5 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:gap-4">
                     <Link
                       href="/contact"
-                      className={`rounded-full bg-gradient-to-r ${activeSlide.gradient} px-8 py-4 text-center font-black text-slate-950 shadow-xl shadow-black/30 transition hover:-translate-y-1`}
+                      className={`rounded-full bg-gradient-to-r ${activeSlide.gradient} px-6 py-3 text-center text-sm font-black text-slate-950 shadow-xl shadow-black/30 transition hover:-translate-y-1 sm:px-8 sm:py-4 sm:text-base`}
                     >
                       {activeSlide.cta}
                     </Link>
                     <Link
                       href="/about"
-                      className="rounded-full border border-white/25 bg-white/10 px-8 py-4 text-center font-bold text-white backdrop-blur transition hover:-translate-y-1 hover:bg-white hover:text-slate-950"
+                      className="rounded-full border border-white/25 bg-white/10 px-6 py-3 text-center text-sm font-bold text-white backdrop-blur transition hover:-translate-y-1 hover:bg-white hover:text-slate-950 sm:px-8 sm:py-4 sm:text-base"
                     >
                       See Our Story
                     </Link>
@@ -185,16 +206,16 @@ export function HeroSlider() {
                 </div>
               </div>
 
-              {/* Compact dot navigation without image thumbnails. */}
-              <div className="flex items-center gap-3">
+              {/* Dot navigation */}
+              <div className="flex items-center gap-2 sm:gap-3">
                 {slides.map((slide, index) => (
                   <button
                     key={slide.id}
                     onClick={() => setCurrentSlide(index)}
-                    className={`h-2.5 rounded-full transition-all duration-500 ${
+                    className={`h-2 rounded-full transition-all duration-500 sm:h-2.5 ${
                       index === currentSlide
-                        ? `w-14 bg-gradient-to-r ${slide.gradient}`
-                        : 'w-2.5 bg-white/35 hover:bg-white/70'
+                        ? `w-10 bg-gradient-to-r sm:w-14 ${slide.gradient}`
+                        : 'w-2 bg-white/35 hover:bg-white/70 sm:w-2.5'
                     }`}
                     aria-label={`Go to slide ${index + 1}`}
                   />
@@ -203,8 +224,12 @@ export function HeroSlider() {
             </div>
           </div>
 
-          {/* Side panel: reinforces the current slide with context and quick stats. */}
-          <aside className="grid gap-6 lg:grid-rows-[1fr_auto]">
+          {/* ── SIDE PANEL
+                FIX 8: Was always visible, stacking below the hero image on mobile
+                and making the page extremely long before the user scrolled past it.
+                Now hidden on mobile/tablet, only shown on lg+ where it sits beside
+                the image in the two-column grid. ── */}
+          <aside className="hidden lg:grid lg:gap-6 lg:grid-rows-[1fr_auto]">
             <div className="rounded-[2rem] border border-white/10 bg-white/[0.07] p-6 shadow-2xl shadow-black/25 backdrop-blur-md">
               <div className={`mb-6 h-2 w-20 rounded-full ${activeSlide.accent}`} />
               <p className="text-sm font-bold uppercase tracking-[0.28em] text-white/45">
@@ -216,7 +241,6 @@ export function HeroSlider() {
               <p className="mt-4 leading-7 text-white/70">
                 Slide through the academy pillars: skill development, pressure confidence, and student-athlete habits.
               </p>
-
               <div className="mt-8 rounded-3xl border border-white/10 bg-black/25 p-5">
                 <p className={`bg-gradient-to-r ${activeSlide.gradient} bg-clip-text text-5xl font-black text-transparent`}>
                   {activeSlide.metric}
@@ -242,9 +266,9 @@ export function HeroSlider() {
               </div>
             </div>
           </aside>
+
         </div>
       </div>
     </section>
   )
 }
-
