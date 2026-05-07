@@ -186,8 +186,8 @@ export default function Dashboard() {
       const rows = potwRes.value.data ?? []
       if (rows.length > 0) {
         potwActive = true
-        const p = rows[0].player as { first_name: string; last_name: string } | null
-        if (p) potwPlayerName = `${p.first_name} ${p.last_name}`
+        const p = rows[0].player ?. [0]
+        if (p) {potwPlayerName = `${p.first_name} ${p.last_name}`
       }
     }
     // PGRST116 = no rows — not treated as error
