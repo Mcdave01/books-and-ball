@@ -1,11 +1,11 @@
-kj'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X, LayoutDashboard, LogOut } from 'lucide-react'
 import clsx from 'clsx'
-import { createClient } from '@/lib/supabase'
+import { createClient } from '../../lib/supabase/supabase'
 import type { User } from '@supabase/supabase-js'
 import toast from 'react-hot-toast'
 
