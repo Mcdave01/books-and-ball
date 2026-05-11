@@ -17,6 +17,7 @@ const playerSchema = z.object({
   height: z.string().optional(),
   weight: z.string().optional(),
   school: z.string().optional(),
+  player_video_documentary: z.string().optional(),
   contact_email: z.string().email().optional().or(z.literal('')),
   contact_phone: z.string().optional(),
   emergency_contact_name: z.string().optional(),
@@ -42,6 +43,7 @@ interface Player {
   height: string
   weight: string
   school: string
+  player_video_documentary: string
   contact_email: string
   contact_phone: string
   emergency_contact_name: string
@@ -59,8 +61,9 @@ interface PlayerFormProps {
   onSubmit: () => void
 }
 
-export function PlayerForm({ player, onClose, onSubmit }: PlayerFormProps) {
+export function  PlayerForm({ player, onClose, onSubmit }: PlayerFormProps) {
   const [loading, setLoading] = useState(false)
+  const [youtubeUrl, setYoutubeUrl] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
   const supabase = createClient()
 
@@ -79,6 +82,7 @@ export function PlayerForm({ player, onClose, onSubmit }: PlayerFormProps) {
       height: player.height,
       weight: player.weight,
       school: player.school,
+      player_video_documentary: player.player_video_documentary,
       contact_email: player.contact_email,
       contact_phone: player.contact_phone,
       emergency_contact_name: player.emergency_contact_name,
@@ -294,6 +298,25 @@ export function PlayerForm({ player, onClose, onSubmit }: PlayerFormProps) {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
+            </div>
+            {/* Player Video Documentary */}
+
+            <div className='grid grid-cols-1 md:grid-col-2 gap-6'>
+
+                 <div>
+              <label className="block text-sm font-medium mb-1">
+                Player Documentary
+              </label>
+              <input
+              {...register('player_video_documentary')}
+              type="text" 
+              placeholder='https://youtube.com/watch?v=xxxx'
+              value={youtubeUrl}
+              onChange={(e) => setYoutubeUrl(e.target.value)}
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500'
+              />
+            </div>
+
             </div>
 
             {/* Contact Information */}

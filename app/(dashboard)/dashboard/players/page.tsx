@@ -17,6 +17,7 @@ interface Player {
   height: string
   weight: string
   school: string
+  player_video_documentary: string
   contact_email: string
   contact_phone: string
   emergency_contact_name: string

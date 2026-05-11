@@ -1,8 +1,10 @@
 ﻿// Registration page: collects academy signup details from prospective players.
 import { Goal } from 'lucide-react'
 import { siteConfig } from '@/config/site'
+import { useState } from 'react'
 
 export default function RegistrationForm() {
+  const [youtubeUrl, setYoutubeUrl] = useState('')
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white print:p-4">
       {/* Header */}
@@ -99,6 +101,18 @@ export default function RegistrationForm() {
                 <option value="l">Large</option>
                 <option value="xl">Extra Large</option>
               </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Player Documentary
+              </label>
+              <input
+              type="text" 
+              placeholder='https://youtube.com/watch?v=xxxx'
+              value={youtubeUrl}
+              onChange={(e) => setYoutubeUrl(e.target.value)}
+              className='w-full border rounded-lg p-2'
+              />
             </div>
           </div>
         </div>
