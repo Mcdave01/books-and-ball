@@ -1,4 +1,6 @@
-﻿// Registration page: collects academy signup details from prospective players.
+﻿
+'use client'
+// Registration page: collects academy signup details from prospective players.
 import { Goal } from 'lucide-react'
 import { siteConfig } from '@/config/site'
 import { useState } from 'react'
