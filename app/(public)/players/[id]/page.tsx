@@ -17,7 +17,9 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
       points: 18.5,
       assists: 7.2,
       rebounds: 4.1
-    }
+      
+    },
+    video:'https://www.youtube.com/watch?v=exc4351_7h8'
   }
 
   return (
@@ -40,6 +42,10 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
               <p><strong>Points per game:</strong> {player.stats.points}</p>
               <p><strong>Assists per game:</strong> {player.stats.assists}</p>
               <p><strong>Rebounds per game:</strong> {player.stats.rebounds}</p>
+            </div>
+            <div>
+            <h2 className="text-2xl font-semibold mb-4">Player's highlight</h2>
+            <div><strong>Video Documentary</strong> {player.video}</div>
             </div>
           </div>
         </div>
